@@ -1,52 +1,46 @@
 <template>
   <div id="app">
-    <header>
-      sdf
-    </header>
-    <div class="container">
-      <Add :addComment="addComment"/>
-      <List :comments="comments" :deleteComment="deleteComment"/>
-    </div>
+    <TodoHeader :addTodo="addTodo"/>
+    <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
+    <TodoFooter :todos="todos" :deleteCompleteTodos="deleteCompleteTodos" :selectAllTodos="selectAllTodos"/>
   </div>
 </template>
 
 <script>
-import Add from './components/Add.vue';
-import List from './components/List.vue';
-
+import TodoHeader from './components/TodoHeader.vue';
+import TodoList from './components/TodoList.vue';
+import TodoFooter from './components/TodoFooter.vue';
 export default {
   name: 'app',
   data(){
     return {
-      comments: [ // 数据在哪个组件， 更新数据的行为就应该定义在哪个组件
-        {
-          name: 'Bob',
-          content: 'Vue 还不错'
-        },
-        {
-          name: 'Cat',
-          content: 'Vue so easy'
-        },
-         {
-          name: 'Bz',
-          content: 'Vue so so'
-        }
+      todos: [
+        {title:'吃飯', complete: false},
+        {title:'睡觉', complete: true},
+        {title:'coding', complete: false},
       ]
     }
   },
   methods: {
-    // 添加评论
-    addComment(comment){
-      this.comments.unshift(comment);
+    addTodo(todo){
+      this.todos.unshift(todo);
     },
-    // 删除指定下标的评论
-    deleteComment(index){
-      this.comments.splice(index, 1);
+    deleteTodo(index){
+      this.todos.splice(index, 1);
+    },
+    // 删除所有选中的todo
+    deleteCompleteTodos(){
+      this.todos = this.todos.filter(todo =>!todo.complete);
+    },
+    // 全选/全不选
+    selectAllTodos(check){
+      this.todos.forEach(todo => todo.complete = check)
     }
   },
   components: {
-    Add,
-    List
+    TodoHeader,
+    TodoList,
+    TodoFooter
   }
 }
 </script>
